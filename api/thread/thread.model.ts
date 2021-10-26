@@ -1,0 +1,28 @@
+import mongoose, {Schema } from 'mongoose';
+export interface IThread{
+  title: String
+  content: String
+  pinned: Boolean
+  isEdited: Boolean
+  score: Number
+  category: Array<String>
+  photos: Array<String>
+  courseID: mongoose.Schema.Types.ObjectId
+}
+
+
+const schema: Schema = new Schema({
+   title: { type: String, required: true},
+   content: {type: String, required: true},
+   pinned: {type: Boolean, required: true},
+   isEdited: {type: Boolean, required: true},
+   score: {type: Number, required: true},
+   category: [String],
+   photos: [String],
+   courseID: {type: mongoose.Schema.Types.ObjectId, required: true}
+  },
+  {
+    timestamps: true,
+  });
+  
+export default mongoose.model<IThread>("Thread", schema, "Thread");
