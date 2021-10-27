@@ -1,26 +1,27 @@
-const jwt = require("jsonwebtoken");
-const config = require("./../../config/environment/index")
-const User = require("../api/user")
+import jwt = require('jsonwebtoken')
+import config = require('../config/environment/index')
+import User = require('../api/user/user.model')
 
-//TODO: refactor this
+// TODO: refactor this
 const auth = async (req, res, next) => {
   try {
-    const token = req.get("Authorization");
-    const data = jwt.verify(token, config.jwtKey);
+    const token = req.get('Authorization')
+    const data = jwt.verify(token, config.jwtKey)
 
-    let user = await User.findOne({ _id: data.userId });
+    const user = await User.findOne({ _id: data.userId })
     if (user) {
-      res.locals.user = user;
-      next();
+      res.locals.user = user
+      next()
     } else {
-      res.status(401).json({ error: "User not found" });
-      return;
+      res.status(401).json({ error: 'User not found' })
+      return
     }
   } catch (err) {
-    if (err.name === "JsonWebTokenError") {
-      res.status(401).json({ error: "Invalid Token" });
-      return;
+    if (err.name === 'JsonWebTokenError') {
+      res.status(401).json({ error: 'Invalid Token' })
+      return
     }
-    next(err);
+    next(err)
   }
-};
+}
+export default auth
