@@ -3,7 +3,6 @@ import mongoose, { Schema } from 'mongoose'
 export interface ICourse {
   code: string
   name: string
-  institution: string
   period: number
   files: Array<string>
 }

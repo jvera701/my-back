@@ -12,7 +12,7 @@ const schema: Schema = new Schema({
   password: { type: String, required: true },
   name: { type: String, required: true },
   role: { type: String, required: true },
-  courses: [mongoose.Schema.Types.ObjectId],
+  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
 })
 
 export default mongoose.model<IUser>('User', schema, 'User')

@@ -1,14 +1,13 @@
 import jwt = require('jsonwebtoken')
-import config = require('../config/environment/index')
-import User = require('../api/user/user.model')
+import { config } from '../config/environment/index'
+import UserController = require('../api/user/user.controller')
 
 // TODO: refactor this
 const auth = async (req, res, next) => {
   try {
     const token = req.get('Authorization')
     const data = jwt.verify(token, config.jwtKey)
-
-    const user = await User.findOne({ _id: data.userId })
+    const user = await UserController.findById({ _id: data._id })
     if (user) {
       res.locals.user = user
       next()

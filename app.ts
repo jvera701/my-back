@@ -2,6 +2,8 @@ import express from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
 import configure = require('./config/environment/index')
+require('./api/user/user.model')
+require('./api/course/course.model')
 import routes from './routes'
 import cors = require('cors')
 import mongoose = require('mongoose')
