@@ -76,7 +76,19 @@ export async function getHomeInfo(req, res, next) {
   try {
     const email = req.body.email
     const user = await User.findOne({ email: email }).populate('courses')
-    res.status(200).json(user)
+    const userCourses: any = user.courses.sort((a: any, b: any) => {
+      if (a.period === b.period) return a.code < b.code ? -1 : 1
+      else return a.period - b.period
+    })
+    const courses = []
+    for (let i = 0; i < userCourses[userCourses.length - 1].period; i++) {
+      courses.push([])
+    }
+    for (let i = 0; i < userCourses.length; i++) {
+      const course = userCourses[i]
+      courses[course.period - 1].push(course)
+    }
+    res.status(200).json(courses)
   } catch (error) {
     console.error(error)
     next(error)
