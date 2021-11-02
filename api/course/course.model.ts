@@ -8,7 +8,7 @@ export interface ICourse {
 }
 
 const schema: Schema = new Schema({
-  code: { type: String, required: true },
+  code: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   institution: { type: String, required: true },
   period: { type: Number, required: true },

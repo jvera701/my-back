@@ -1,4 +1,4 @@
-import User, { IUser } from '../user/user.model'
+import User from '../user/user.model'
 import jwt = require('jsonwebtoken')
 import configuration = require('./../../config/environment/index')
 import bcrypt = require('bcrypt')
@@ -63,7 +63,7 @@ export async function register(req, res, next) {
   }
 }
 
-export async function getUser(req, res, next) {
+export async function getUser(req, res) {
   const { email, name, role } = res.locals.user
   res.status(200).json({ email, name, role })
 }

@@ -7,7 +7,8 @@ export interface IThread {
   score: number
   category: Array<string>
   photos: Array<string>
-  courseID: mongoose.Schema.Types.ObjectId
+  courseId: mongoose.Schema.Types.ObjectId
+  userId: mongoose.Schema.Types.ObjectId
 }
 
 const schema: Schema = new Schema(
@@ -19,7 +20,16 @@ const schema: Schema = new Schema(
     score: { type: Number, required: true },
     category: [String],
     photos: [String],
-    courseID: { type: mongoose.Schema.Types.ObjectId, required: true },
+    courseId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Course',
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
   },
   {
     timestamps: true,

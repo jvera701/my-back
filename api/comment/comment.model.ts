@@ -3,10 +3,9 @@ export interface IComment {
   content: string
   isEdited: boolean
   score: number
-  category: Array<string>
   photos: Array<string>
-  commentID: mongoose.Schema.Types.ObjectId
-  courseID: mongoose.Schema.Types.ObjectId
+  commentID: mongoose.Schema.Types.ObjectId | null
+  courseID: mongoose.Schema.Types.ObjectId | null
 }
 
 const schema: Schema = new Schema(
