@@ -4,8 +4,9 @@ export interface IComment {
   isEdited: boolean
   score: number
   photos: Array<string>
-  commentID: mongoose.Schema.Types.ObjectId | null
-  courseID: mongoose.Schema.Types.ObjectId | null
+  commentId: mongoose.Schema.Types.ObjectId | null
+  threadId: mongoose.Schema.Types.ObjectId | null
+  userId: mongoose.Schema.Types.ObjectId
 }
 
 const schema: Schema = new Schema(
@@ -15,8 +16,9 @@ const schema: Schema = new Schema(
     score: { type: Number, required: true },
     category: [String],
     photos: [String],
-    commentID: { type: mongoose.Schema.Types.ObjectId },
-    courseID: { type: mongoose.Schema.Types.ObjectId },
+    commentId: { type: mongoose.Schema.Types.ObjectId },
+    threadId: { type: mongoose.Schema.Types.ObjectId },
+    userId: { type: mongoose.Schema.Types.ObjectId, required: true },
   },
   {
     timestamps: true,

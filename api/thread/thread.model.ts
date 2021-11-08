@@ -5,7 +5,8 @@ export interface IThread {
   pinned: boolean
   isEdited: boolean
   score: number
-  category: Array<string>
+  replies: number
+  category: string
   photos: Array<string>
   courseId: mongoose.Schema.Types.ObjectId
   userId: mongoose.Schema.Types.ObjectId
@@ -18,7 +19,8 @@ const schema: Schema = new Schema(
     pinned: { type: Boolean, required: true },
     isEdited: { type: Boolean, required: true },
     score: { type: Number, required: true },
-    category: [String],
+    replies: { type: Number, required: true },
+    category: { type: String, required: true },
     photos: [String],
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
