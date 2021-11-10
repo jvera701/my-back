@@ -1,4 +1,5 @@
 import Thread from '../thread/thread.model'
+import Comment from '../comment/comment.model'
 
 export async function getThreads(req, res, next) {
   try {
@@ -18,6 +19,31 @@ export async function getThreads(req, res, next) {
       .populate('userId', '-_id -email -password -courses -__v -role')
 
     res.status(200).json({ pinned, notPinned })
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+}
+
+export async function getThreadInformation(req, res, next) {
+  try {
+    const threadId = req.params.threadId
+    const info = await Thread.findOne(
+      { _id: threadId },
+      { _id: 0, courseId: 0, pinned: 0, category: 0 }
+    ).populate('userId', '-_id -email -password -courses -__v -role')
+
+    const comments = await Comment.find({ threadId: threadId })
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'userId',
+          select: '-_id -email -password -courses -__v -role',
+        },
+      })
+      .populate('userId', '-_id -email -password -courses -__v -role')
+
+    res.status(200).json({ info, comments })
   } catch (e) {
     console.error(e)
     next(e)

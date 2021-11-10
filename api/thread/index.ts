@@ -4,4 +4,5 @@ import auth from '../../middleware/middlewares'
 const app = express.Router()
 
 app.get('/:courseId', auth, ThreadController.getThreads)
+app.get('/thread/:threadId', auth, ThreadController.getThreadInformation)
 export { app }
