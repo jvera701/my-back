@@ -1,6 +1,6 @@
 import Thread from '../thread/thread.model'
 import Comment from '../comment/comment.model'
-import threadModel from '../thread/thread.model'
+import User from '../user/user.model'
 
 export async function getThreads(req, res, next) {
   try {
@@ -16,7 +16,7 @@ export async function getThreads(req, res, next) {
       { courseId: courseId, pinned: false },
       { content: 0, photos: 0, courseId: 0, isEdited: 0, pinned: 0 }
     )
-      .sort('-date')
+      .sort('-createdAt')
       .populate('userId', '-_id -email -password -courses -__v -role')
 
     res.status(200).json({ pinned, notPinned })
@@ -40,7 +40,7 @@ export async function searchThreads(req, res, next) {
       },
       { content: 0, photos: 0, courseId: 0, isEdited: 0, pinned: 0 }
     )
-      .sort('-date')
+      .sort('-createdAt')
       .populate('userId', '-_id -email -password -courses -__v -role')
     res.status(200).json(notPinned)
   } catch (e) {
@@ -68,6 +68,33 @@ export async function getThreadInformation(req, res, next) {
       .populate('userId', '-_id -email -password -courses -__v -role')
 
     res.status(200).json({ info, comments })
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+}
+
+export async function createThread(req, res, next) {
+  try {
+    const { title, content, category, photos, courseId, email } = req.body
+    const params = {
+      pinned: false,
+      isEdited: false,
+      score: 0,
+      replies: 0,
+      title: title,
+      content: content,
+      category: category,
+      photos: photos,
+      courseId: courseId,
+    }
+    const id = await (await User.findOne({ email: email }))._id
+    await Thread.create({
+      ...params,
+      userId: id,
+    })
+    const message = 'Thread successfully created'
+    res.status(200).json(message)
   } catch (e) {
     console.error(e)
     next(e)
