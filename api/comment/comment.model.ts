@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 export interface IComment {
   content: string
-  isEdited: boolean
   score: number
   photos: Array<string>
   threadId: mongoose.Schema.Types.ObjectId | null
@@ -12,7 +11,6 @@ export interface IComment {
 const schema: Schema = new Schema(
   {
     content: { type: String, required: true },
-    isEdited: { type: Boolean, required: true },
     score: { type: Number, required: true },
     photos: { type: [String], required: true },
     comments: {

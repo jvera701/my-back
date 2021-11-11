@@ -3,7 +3,6 @@ export interface IThread {
   title: string
   content: string
   pinned: boolean
-  isEdited: boolean
   score: number
   replies: number
   category: string
@@ -17,7 +16,6 @@ const schema: Schema = new Schema(
     title: { type: String, required: true },
     content: { type: String, required: true },
     pinned: { type: Boolean, required: true },
-    isEdited: { type: Boolean, required: true },
     score: { type: Number, required: true },
     replies: { type: Number, required: true },
     category: { type: String, required: true },

@@ -1,4 +1,4 @@
-import Thread from '../thread/thread.model'
+import Thread from './thread.model'
 import Comment from '../comment/comment.model'
 import User from '../user/user.model'
 
@@ -54,7 +54,7 @@ export async function getThreadInformation(req, res, next) {
     const threadId = req.params.threadId
     const info = await Thread.findOne(
       { _id: threadId },
-      { _id: 0, courseId: 0, pinned: 0, category: 0 }
+      { courseId: 0, pinned: 0, category: 0 }
     ).populate('userId', '-_id -email -password -courses -__v -role')
 
     const comments = await Comment.find({ threadId: threadId })
@@ -65,7 +65,7 @@ export async function getThreadInformation(req, res, next) {
           select: '-_id -email -password -courses -__v -role',
         },
       })
-      .populate('userId', '-_id -email -password -courses -__v -role')
+      .populate('userId', '-email -password -courses -__v -role')
 
     res.status(200).json({ info, comments })
   } catch (e) {
@@ -79,7 +79,6 @@ export async function createThread(req, res, next) {
     const { title, content, category, photos, courseId, email } = req.body
     const params = {
       pinned: false,
-      isEdited: false,
       score: 0,
       replies: 0,
       title: title,
