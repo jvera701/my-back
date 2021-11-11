@@ -1,5 +1,6 @@
 import Comment from './comment.model'
 import User from '../user/user.model'
+import Thread from '../thread/thread.model'
 
 export async function createComment(req, res, next) {
   try {
@@ -22,9 +23,21 @@ export async function createComment(req, res, next) {
         { _id: parentCommentId },
         { $push: { comments: newComment._id } }
       )
+    } else {
+      await Thread.findOneAndUpdate({ _id: threadId }, { $inc: { replies: 1 } })
     }
-    const success = 'success'
-    res.status(200).json(success)
+    res.status(204).end()
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+}
+
+export async function updateComment(req, res, next) {
+  try {
+    const { _id, content } = req.body
+    await Comment.findByIdAndUpdate(_id, { content: content })
+    res.status(204).end()
   } catch (e) {
     console.error(e)
     next(e)

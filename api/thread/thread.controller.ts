@@ -55,17 +55,17 @@ export async function getThreadInformation(req, res, next) {
     const info = await Thread.findOne(
       { _id: threadId },
       { courseId: 0, pinned: 0, category: 0 }
-    ).populate('userId', '-_id -email -password -courses -__v -role')
+    ).populate('userId', '-_id -password -courses -__v -role')
 
     const comments = await Comment.find({ threadId: threadId })
       .populate({
         path: 'comments',
         populate: {
           path: 'userId',
-          select: '-_id -email -password -courses -__v -role',
+          select: '-_id -password -courses -__v -role',
         },
       })
-      .populate('userId', '-email -password -courses -__v -role')
+      .populate('userId', '-password -courses -__v -role')
 
     res.status(200).json({ info, comments })
   } catch (e) {
@@ -92,10 +92,33 @@ export async function createThread(req, res, next) {
       ...params,
       userId: id,
     })
-    const message = 'Thread successfully created'
-    res.status(200).json(message)
+    res.status(204).end()
   } catch (e) {
     console.error(e)
     next(e)
   }
 }
+
+export async function updateThread(req, res, next) {
+  try {
+    const { _id, title, content } = req.body
+    await Thread.findByIdAndUpdate(_id, { title: title, content: content })
+    res.status(204).end()
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+}
+
+/*
+export async function deleteThread(req, res, next) {
+  try {
+    const { _id } = req.body
+    await Thread.deleteOne({ _id: _id })
+    res.status(204).end()
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+}
+*/

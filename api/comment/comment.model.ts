@@ -12,12 +12,14 @@ const schema: Schema = new Schema(
   {
     content: { type: String, required: true },
     score: { type: Number, required: true },
-    photos: { type: [String], required: true },
-    comments: {
-      type: [mongoose.Schema.Types.ObjectId],
-      required: true,
-      ref: 'Comment',
-    },
+    photos: [{ type: String, required: true }],
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Comment',
+      },
+    ],
     threadId: { type: mongoose.Schema.Types.ObjectId, ref: 'Thread' },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -29,4 +31,5 @@ const schema: Schema = new Schema(
     timestamps: true,
   }
 )
+
 export default mongoose.model<IComment>('Comment', schema, 'Comment')
