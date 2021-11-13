@@ -14,4 +14,5 @@ const schema: Schema = new Schema({
   period: { type: Number, required: true },
   files: [String],
 })
+
 export default mongoose.model<ICourse>('Course', schema, 'Course')

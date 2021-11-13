@@ -5,5 +5,6 @@ const app = express.Router()
 
 app.post('/comment', auth, CommentController.createComment)
 app.put('/comment', auth, CommentController.updateComment)
+app.delete('/comment', auth, CommentController.deleteComment)
 
 export { app }
