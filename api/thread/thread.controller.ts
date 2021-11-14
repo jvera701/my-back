@@ -49,6 +49,26 @@ export async function searchThreads(req, res, next) {
   }
 }
 
+export async function filterThreads(req, res, next) {
+  try {
+    const { toFilter, courseId } = req.body
+    const notPinned = await Thread.find(
+      {
+        courseId: courseId,
+        pinned: false,
+        category: toFilter,
+      },
+      { content: 0, photos: 0, courseId: 0, isEdited: 0, pinned: 0 }
+    )
+      .sort('-createdAt')
+      .populate('userId', '-_id -email -password -courses -__v -role')
+    res.status(200).json(notPinned)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+}
+
 export async function getThreadInformation(req, res, next) {
   try {
     const threadId = req.params.threadId
@@ -113,8 +133,7 @@ export async function updateThread(req, res, next) {
 export async function deleteThread(req, res, next) {
   try {
     const { _id } = req.body
-    //await Thread.deleteOne({ _id: _id })
-    //const thread = await Thread.findById(_id)
+
     const listComment = []
     const listIdFather = []
     const comments = await Comment.find({ threadId: _id })
