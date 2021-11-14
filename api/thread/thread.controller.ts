@@ -1,5 +1,5 @@
 import Thread from './thread.model'
-import Comment from '../comment/comment.model'
+import Comment, { IComment } from '../comment/comment.model'
 import User from '../user/user.model'
 
 export async function getThreads(req, res, next) {
@@ -110,15 +110,30 @@ export async function updateThread(req, res, next) {
   }
 }
 
-/*
 export async function deleteThread(req, res, next) {
   try {
     const { _id } = req.body
+    //await Thread.deleteOne({ _id: _id })
+    //const thread = await Thread.findById(_id)
+    const listComment = []
+    const listIdFather = []
+    const comments = await Comment.find({ threadId: _id })
+
+    for (let i = 0; i < comments.length; i++) {
+      const innerComment = comments[i].comments
+      listIdFather.push(comments[i]._id)
+      for (let j = 0; j < innerComment.length; j++) {
+        listComment.push(innerComment[j])
+      }
+    }
+
+    await Comment.deleteMany({ _id: listComment })
+    await Comment.deleteMany({ _id: listIdFather })
     await Thread.deleteOne({ _id: _id })
+
     res.status(204).end()
   } catch (e) {
     console.error(e)
     next(e)
   }
 }
-*/

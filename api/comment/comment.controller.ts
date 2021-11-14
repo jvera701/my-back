@@ -46,12 +46,25 @@ export async function updateComment(req, res, next) {
 
 export async function deleteComment(req, res, next) {
   try {
-    const { _id } = req.body
+    const { _id, threadId } = req.body
     const comment = Comment.findById(_id)
     const comments = (await comment).comments
 
     await Comment.deleteMany({ _id: comments })
     await Comment.deleteOne({ _id: _id })
+    if (threadId === '') {
+      /*
+      await Comment.findOneAndUpdate(
+        { _id: parentCommentId },
+        { $pull: { comments: _id } }
+      )
+      */
+    } else {
+      await Thread.findOneAndUpdate(
+        { _id: threadId },
+        { $inc: { replies: -1 } }
+      )
+    }
     res.status(204).end()
   } catch (e) {
     console.error(e)
