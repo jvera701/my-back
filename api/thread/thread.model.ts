@@ -9,6 +9,7 @@ export interface IThread {
   photos: Array<string>
   courseId: mongoose.Schema.Types.ObjectId
   userId: mongoose.Schema.Types.ObjectId
+  isEdited: boolean
 }
 
 const schema: Schema = new Schema(
@@ -30,6 +31,7 @@ const schema: Schema = new Schema(
       required: true,
       ref: 'User',
     },
+    isEdited: { type: Boolean, required: true },
   },
   {
     timestamps: true,

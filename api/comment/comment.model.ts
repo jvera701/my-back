@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
+
 export interface IComment {
   content: string
   score: number
@@ -6,6 +7,7 @@ export interface IComment {
   threadId: mongoose.Schema.Types.ObjectId | null
   userId: mongoose.Schema.Types.ObjectId
   comments: Array<mongoose.Schema.Types.ObjectId>
+  isEdited: boolean
 }
 
 const schema: Schema = new Schema(
@@ -26,6 +28,7 @@ const schema: Schema = new Schema(
       required: true,
       ref: 'User',
     },
+    isEdited: { type: Boolean, required: true },
   },
   {
     timestamps: true,

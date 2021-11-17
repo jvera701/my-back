@@ -2,7 +2,6 @@ import jwt = require('jsonwebtoken')
 import { config } from '../config/environment/index'
 import UserController = require('../api/user/user.controller')
 
-// TODO: refactor this
 const auth = async (req, res, next) => {
   try {
     const token = req.get('Authorization')

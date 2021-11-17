@@ -1,7 +1,7 @@
 import User from '../user/user.model'
 import jwt = require('jsonwebtoken')
 import configuration = require('./../../config/environment/index')
-import bcrypt = require('bcrypt')
+import bcrypt from 'bcrypt'
 
 export async function authenticate(res, email, password) {
   const user = await User.findOne({ email })

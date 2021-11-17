@@ -106,6 +106,7 @@ export async function createThread(req, res, next) {
       category: category,
       photos: photos,
       courseId: courseId,
+      isEdited: false,
     }
     const id = await (await User.findOne({ email: email }))._id
     await Thread.create({
@@ -122,7 +123,11 @@ export async function createThread(req, res, next) {
 export async function updateThread(req, res, next) {
   try {
     const { _id, title, content } = req.body
-    await Thread.findByIdAndUpdate(_id, { title: title, content: content })
+    await Thread.findByIdAndUpdate(_id, {
+      title: title,
+      content: content,
+      isEdited: true,
+    })
     res.status(204).end()
   } catch (e) {
     console.error(e)

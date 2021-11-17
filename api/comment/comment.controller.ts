@@ -14,6 +14,7 @@ export async function createComment(req, res, next) {
       threadId: finalThread,
       userId: userId,
       comments: [],
+      isEdited: false,
     }
     const newComment = await Comment.create({
       ...params,
@@ -36,7 +37,7 @@ export async function createComment(req, res, next) {
 export async function updateComment(req, res, next) {
   try {
     const { _id, content } = req.body
-    await Comment.findByIdAndUpdate(_id, { content: content })
+    await Comment.findByIdAndUpdate(_id, { content: content, isEdited: true })
     res.status(204).end()
   } catch (e) {
     console.error(e)
